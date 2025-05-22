@@ -1,561 +1,544 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fa">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times; color: #0b0b0b; -webkit-text-stroke: #0b0b0b}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times; color: #0b0b0b; -webkit-text-stroke: #0b0b0b; min-height: 18.0px}
-    span.s1 {font-kerning: none}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>مدیریت محصولات</title>
+<style>
+  /* اینجا CSS همون کد قبلی با کمی بهینه‌سازی */
+  body {
+    font-family: "Vazir", Tahoma, sans-serif;
+    direction: rtl;
+    padding: 20px;
+    margin: 0;
+    background: #f7f9fc;
+  }
+  .container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  h2, h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+  input, select, button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    transition: border-color 0.3s ease;
+  }
+  input, select {
+    flex-grow: 1;
+    min-width: 160px;
+    max-width: 250px;
+  }
+  button {
+    cursor: pointer;
+    font-weight: 700;
+    white-space: nowrap;
+    margin: 0 6px;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    min-width: 120px;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    filter: brightness(0.9);
+  }
+  button.add-product {
+    background-color: #2d9cdb;
+  }
+  button.add-product:hover {
+    background-color: #1b7fb8;
+  }
+  button.add-category {
+    background-color: #27ae60;
+  }
+  button.add-category:hover {
+    background-color: #1e8449;
+  }
+  button.delete-btn {
+    background-color: #e74c3c;
+    min-width: 160px;
+    padding: 12px 15px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin-left: 12px;
+    transition: background-color 0.3s ease;
+  }
+  button.delete-btn:hover {
+    background-color: #c0392b;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+  }
+  #searchInput {
+    width: 100%;
+    margin-bottom: 25px;
+    font-size: 1.3rem;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  #searchInput:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+    outline: none;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 8px;
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+  thead tr th {
+    border-bottom: 2px solid #2980b9;
+    padding: 12px 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #34495e;
+    white-space: nowrap;
+  }
+  tbody tr.main-row td {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 10px 5px;
+    border-bottom: 1px solid #ccc;
+    background-color: #ecf6fc;
+    text-align: right;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  tbody tr.site-row td, tbody tr.fix-buttons-row td {
+    background-color: #f3f7fa;
+    padding: 6px 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: right;
+    white-space: nowrap;
+  }
+  tbody tr.fix-buttons-row td {
+    text-align: center;
+  }
+  button.site-status {
+    min-width: 110px;
+    margin: 0 4px 4px 0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  button.available {
+    background-color: #27ae60;
+    color: white;
+  }
+  button.available:hover {
+    background-color: #1e8449;
+  }
+  button.unavailable {
+    background-color: #c0392b;
+    color: white;
+  }
+  button.unavailable:hover {
+    background-color: #922b21;
+  }
+  button.fix {
+    background-color: #f39c12;
+    min-width: 110px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    margin: 0 6px;
+  }
+  button.fix:hover {
+    background-color: #d68910;
+  }
+  button.done {
+    background-color: #2980b9;
+    min-width: 110px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    margin: 0 6px;
+  }
+  button.done:hover {
+    background-color: #21618c;
+  }
+  button.edit {
+    background-color: #7f8c8d;
+    min-width: 90px;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+  }
+  button.edit:hover {
+    background-color: #636e72;
+  }
+  button.delete {
+    background-color: #e74c3c;
+    min-width: 90px;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+  }
+  button.delete:hover {
+    background-color: #c0392b;
+  }
+  #filterButtons {
+    margin: 25px 0 10px 0;
+    text-align: center;
+  }
+  #filterButtons button {
+    background-color: #2980b9;
+    color: white;
+    min-width: 160px;
+    padding: 10px 18px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    margin: 0 12px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  #filterButtons button:hover {
+    background-color: #21618c;
+  }
+  #filteredList {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: inset 0 0 8px #ccc;
+    font-size: 1.1rem;
+    color: #333;
+    margin-top: 10px;
+  }
+  #filteredList ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  #filteredList li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    cursor: default;
+  }
+  #filteredList li:hover {
+    background-color: #e8f4fc;
+  }
+  #filteredList li button {
+    background-color: transparent;
+    border: none;
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  #filteredList li button:hover {
+    color: #c0392b;
+  }
+  .row-number {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 10px;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    color: #555;
+  }
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="fa"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta charset="UTF-8" /&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</span></p>
-<p class="p1"><span class="s1">&lt;title&gt;مدیریت محصولات&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>/* اینجا CSS همون کد قبلی با کمی بهینه‌سازی */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-family: "Vazir", Tahoma, sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>direction: rtl;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background: #f7f9fc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>max-width: 900px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 20px auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 25px 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>box-shadow: 0 5px 20px rgba(0,0,0,0.1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>h2, h3 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #2c3e50;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.form-row {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>flex-wrap: wrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>gap: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>input, select, button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 10px 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 16px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border: 1px solid #bbb;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: border-color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>input, select {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>flex-grow: 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 160px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>max-width: 250px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>white-space: nowrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 10px 18px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 120px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>user-select: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: background-color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>filter: brightness(0.9);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.add-product {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #2d9cdb;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.add-product:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #1b7fb8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.add-category {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #27ae60;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.add-category:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #1e8449;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.delete-btn {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #e74c3c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 160px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 12px 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-left: 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: background-color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.delete-btn:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #c0392b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>input:focus, select:focus {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>outline: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-color: #3498db;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#searchInput {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-bottom: 25px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.3rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 12px 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border: 1px solid #bbb;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>box-sizing: border-box;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: border-color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#searchInput:focus {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-color: #3498db;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>outline: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>table {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-collapse: collapse;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-top: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>table-layout: fixed;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>word-wrap: break-word;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>thead tr th {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-bottom: 2px solid #2980b9;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 12px 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #34495e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>white-space: nowrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>tbody tr.main-row td {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 10px 5px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-bottom: 1px solid #ccc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #ecf6fc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: right;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>vertical-align: middle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>white-space: nowrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>tbody tr.site-row td, tbody tr.fix-buttons-row td {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #f3f7fa;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-bottom: 1px solid #ccc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: right;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>white-space: nowrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>tbody tr.fix-buttons-row td {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.site-status {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 110px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0 4px 4px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.available {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #27ae60;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.available:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #1e8449;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.unavailable {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #c0392b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.unavailable:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #922b21;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.fix {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #f39c12;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 110px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.fix:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #d68910;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.done {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #2980b9;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 110px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.done:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #21618c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.edit {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #7f8c8d;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 90px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 0.95rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.edit:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #636e72;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.delete {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #e74c3c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 90px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 6px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 0.95rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>button.delete:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #c0392b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filterButtons {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 25px 0 10px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filterButtons button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #2980b9;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>min-width: 160px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 10px 18px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: background-color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>user-select: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filterButtons button:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #21618c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background: #fafafa;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>max-height: 220px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>overflow-y: auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>box-shadow: inset 0 0 8px #ccc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #333;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-top: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList ul {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>list-style-type: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList li {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 8px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-bottom: 1px solid #ddd;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>justify-content: space-between;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-radius: 5px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: background-color 0.2s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>cursor: default;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList li:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #e8f4fc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList li button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: transparent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #e74c3c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>line-height: 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transition: color 0.3s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#filteredList li button:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #c0392b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.row-number {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-weight: 700;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding: 0 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>vertical-align: middle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>user-select: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color: #555;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h2&gt;مدیریت محصولات&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="form-row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;input id="productName" placeholder="نام محصول" type="text" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;select id="categorySelect"&gt;&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button class="add-product" onclick="addProduct()"&gt;➕ افزودن محصول&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="form-row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;input id="newCategory" placeholder="دسته‌بندی جدید" type="text" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button class="add-category" onclick="addCategory()"&gt;➕ افزودن دسته‌بندی&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="deleteCategory()" class="delete-btn"&gt;🗑️ حذف دسته‌بندی&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;input</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>id="searchInput"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>onkeyup="filterProducts()"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>placeholder="جستجوی محصول..."</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>type="text"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>/&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h3&gt;لیست محصولات&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;table&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;thead&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;tr&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;ردیف&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;محصول + دسته‌بندی&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;وضعیت سایت‌ها&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;اصلاح&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;ویرایش&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;th&gt;حذف&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/tr&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/thead&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;tbody id="productBody"&gt;&lt;/tbody&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/table&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="filterButtons"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="showNeedFix()"&gt;محصولات نیاز به اصلاح&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="showFixed()"&gt;محصولات اصلاح شده&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="hideFiltered()"&gt;پنهان کردن لیست‌ها&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="filteredList" style="display:none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h3 id="filteredTitle"&gt;&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;ul id="filteredItems"&gt;&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const API_URL = "https://script.google.com/macros/s/AKfycbyucnsIwf_H84wA6jTnJpYxnMobwU0dWMH8jrUOYiPyTRjMn2zJOcjvok4L1jvu0wUdjg/exec";</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let categories = [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let products = [];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function loadData() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const res = await fetch(API_URL + "?method=getAll");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const data = await res.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>categories = data.categories || [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>products = data.products || [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(categories.length === 0) categories = ["بدون دسته"];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderCategories();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (err) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert("خطا در بارگذاری داده‌ها از سرور گوگل: " + err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function saveData() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const res = await fetch(API_URL + "?method=saveAll", {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>method: "POST",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>headers: {"Content-Type": "application/json"},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body: JSON.stringify({categories, products}),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const result = await res.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(result.status !== "success") throw new Error(result.message || "خطا در ذخیره داده‌ها");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} catch (err) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert("خطا در ذخیره داده‌ها به سرور گوگل: " + err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderCategories() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const select = document.getElementById("categorySelect");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>select.innerHTML = "";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>categories.forEach(cat =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const opt = document.createElement("option");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>opt.value = opt.textContent = cat;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>select.appendChild(opt);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function addCategory() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const val = document.getElementById("newCategory").value.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(val &amp;&amp; !categories.includes(val)){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>categories.push(val);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderCategories();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById("newCategory").value = "";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function deleteCategory() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const selected = document.getElementById("categorySelect").value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(confirm(`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selected}" حذف شود؟`)){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>products.forEach(p =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(p.category === selected) p.category = "بدون دسته";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>categories = categories.filter(cat =&gt; cat !== selected);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderCategories();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function addProduct() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const name = document.getElementById("productName").value.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const cat = document.getElementById("categorySelect").value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(name){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>products.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>name, category: cat,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>kala: false, bosh: false, karcher: false, siyabazar: false,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>fixStatus: "", fixDate: ""</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById("productName").value = "";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderProducts() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const tbody = document.getElementById("productBody");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>tbody.innerHTML = "";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products.forEach((p, i) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const mainRow = document.createElement("tr");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>mainRow.classList.add("main-row");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>mainRow.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td class="row-number"&gt;${i+1}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td style="text-align:right; vertical-align: middle;"&gt;${p.name} — (${p.category})&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td style="text-align:right; vertical-align: middle;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="site-status ${p.kala ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'kala')" title="کالاگردون"&gt;${p.kala ? '✅ کالاگردون: موجود' : '❌ کالاگردون: ناموجود'}&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="site-status ${p.bosh ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'bosh')" title="بوش"&gt;${p.bosh ? '✅ بوش: موجود' : '❌ بوش: ناموجود'}&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="site-status ${p.karcher ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'karcher')" title="کارچر"&gt;${p.karcher ? '✅ کارچر: موجود' : '❌ کارچر: ناموجود'}&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="site-status ${p.siyabazar ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'siyabazar')" title="سیا بازار"&gt;${p.siyabazar ? '✅ سیا بازار: موجود' : '❌ سیا بازار: ناموجود'}&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td class="fix-status" style="text-align:center; vertical-align: middle;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>${p.fixStatus === "fixed" ? "اصلاح شد ✅" : p.fixStatus === "needFix" ? "نیاز به اصلاح ❌" : "-"}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span class="fix-date"&gt;${p.fixDate ? p.fixDate : ""}&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;br/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="fix" onclick="markNeedFix(${i})"&gt;نیاز به اصلاح&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="done" onclick="markFixed(${i})"&gt;اصلاح شد&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td style="text-align:center; vertical-align: middle;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="edit" onclick="editProduct(${i})"&gt;ویرایش ✏️&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;td style="text-align:center; vertical-align: middle;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button class="delete" onclick="deleteProduct(${i})"&gt;حذف ❌&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>tbody.appendChild(mainRow);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function toggleSite(index, site) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products[index][site] = !products[index][site];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function markNeedFix(index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products[index].fixStatus = "needFix";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products[index].fixDate = new Date().toLocaleString("fa-IR");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function markFixed(index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products[index].fixStatus = "fixed";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>products[index].fixDate = new Date().toLocaleString("fa-IR");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function editProduct(index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const newName = prompt("نام جدید محصول:", products[index].name);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(newName &amp;&amp; newName.trim() !== ""){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>products[index].name = newName.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function deleteProduct(index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(confirm("آیا از حذف این محصول مطمئن هستید؟")){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>products.splice(index, 1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function showNeedFix() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>showFilteredList("needFix", "محصولات نیاز به اصلاح");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function showFixed() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>showFilteredList("fixed", "محصولات اصلاح شده");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function hideFiltered() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>document.getElementById("filteredList").style.display = "none";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function showFilteredList(status, title) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const container = document.getElementById("filteredList");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const ul = document.getElementById("filteredItems");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const heading = document.getElementById("filteredTitle");</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>heading.textContent = title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>ul.innerHTML = "";</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const filteredProducts = products.filter(p =&gt; p.fixStatus === status);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(filteredProducts.length === 0){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>ul.innerHTML = "&lt;li&gt;هیچ محصولی موجود نیست.&lt;/li&gt;";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>filteredProducts.forEach((p) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const li = document.createElement("li");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>li.innerHTML = `${p.name} — ${p.category} &lt;br&gt;&lt;small&gt;آخرین تغییر: ${p.fixDate}&lt;/small&gt;`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const btn = document.createElement("button");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>btn.textContent = "❌";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>btn.title = "حذف محصول";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>btn.onclick = () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>if(confirm("آیا مطمئن هستید که می‌خواهید این محصول را حذف کنید؟")){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const idx = products.findIndex(prod =&gt; prod.name === p.name);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if(idx &gt; -1){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>products.splice(idx, 1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>renderProducts();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>showFilteredList(status, title);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>saveData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>li.appendChild(btn);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>ul.appendChild(li);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>container.style.display = "block";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>container.scrollIntoView({behavior:"smooth"});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function filterProducts() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const value = document.getElementById("searchInput").value.toLowerCase();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const rows = document.querySelectorAll("#productBody tr.main-row");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>rows.forEach(row =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const name = row.cells[1].textContent.toLowerCase();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const display = name.includes(value) ? "" : "none";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>row.style.display = display;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>window.onload = () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>loadData();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<div class="container">
+  <h2>مدیریت محصولات</h2>
+
+  <div class="form-row">
+    <input id="productName" placeholder="نام محصول" type="text" />
+    <select id="categorySelect"></select>
+    <button class="add-product" onclick="addProduct()">➕ افزودن محصول</button>
+  </div>
+
+  <div class="form-row">
+    <input id="newCategory" placeholder="دسته‌بندی جدید" type="text" />
+    <button class="add-category" onclick="addCategory()">➕ افزودن دسته‌بندی</button>
+    <button onclick="deleteCategory()" class="delete-btn">🗑️ حذف دسته‌بندی</button>
+  </div>
+
+  <input
+    id="searchInput"
+    onkeyup="filterProducts()"
+    placeholder="جستجوی محصول..."
+    type="text"
+  />
+
+  <h3>لیست محصولات</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ردیف</th>
+        <th>محصول + دسته‌بندی</th>
+        <th>وضعیت سایت‌ها</th>
+        <th>اصلاح</th>
+        <th>ویرایش</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody id="productBody"></tbody>
+  </table>
+
+  <div id="filterButtons">
+    <button onclick="showNeedFix()">محصولات نیاز به اصلاح</button>
+    <button onclick="showFixed()">محصولات اصلاح شده</button>
+    <button onclick="hideFiltered()">پنهان کردن لیست‌ها</button>
+  </div>
+
+  <div id="filteredList" style="display:none;">
+    <h3 id="filteredTitle"></h3>
+    <ul id="filteredItems"></ul>
+  </div>
+</div>
+
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbyucnsIwf_H84wA6jTnJpYxnMobwU0dWMH8jrUOYiPyTRjMn2zJOcjvok4L1jvu0wUdjg/exec";
+
+  let categories = [];
+  let products = [];
+
+  async function loadData() {
+    try {
+      const res = await fetch(API_URL + "?method=getAll");
+      const data = await res.json();
+      categories = data.categories || [];
+      products = data.products || [];
+      if(categories.length === 0) categories = ["بدون دسته"];
+      renderCategories();
+      renderProducts();
+    } catch (err) {
+      alert("خطا در بارگذاری داده‌ها از سرور گوگل: " + err.message);
+    }
+  }
+
+  async function saveData() {
+    try {
+      const res = await fetch(API_URL + "?method=saveAll", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({categories, products}),
+      });
+      const result = await res.json();
+      if(result.status !== "success") throw new Error(result.message || "خطا در ذخیره داده‌ها");
+    } catch (err) {
+      alert("خطا در ذخیره داده‌ها به سرور گوگل: " + err.message);
+    }
+  }
+
+  function renderCategories() {
+    const select = document.getElementById("categorySelect");
+    select.innerHTML = "";
+    categories.forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = opt.textContent = cat;
+      select.appendChild(opt);
+    });
+  }
+
+  function addCategory() {
+    const val = document.getElementById("newCategory").value.trim();
+    if(val && !categories.includes(val)){
+      categories.push(val);
+      renderCategories();
+      document.getElementById("newCategory").value = "";
+      saveData();
+    }
+  }
+
+  function deleteCategory() {
+    const selected = document.getElementById("categorySelect").value;
+    if(confirm(`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selected}" حذف شود؟`)){
+      products.forEach(p => {
+        if(p.category === selected) p.category = "بدون دسته";
+      });
+      categories = categories.filter(cat => cat !== selected);
+      renderCategories();
+      renderProducts();
+      saveData();
+    }
+  }
+
+  function addProduct() {
+    const name = document.getElementById("productName").value.trim();
+    const cat = document.getElementById("categorySelect").value;
+    if(name){
+      products.push({
+        name, category: cat,
+        kala: false, bosh: false, karcher: false, siyabazar: false,
+        fixStatus: "", fixDate: ""
+      });
+      renderProducts();
+      document.getElementById("productName").value = "";
+      saveData();
+    }
+  }
+
+  function renderProducts() {
+    const tbody = document.getElementById("productBody");
+    tbody.innerHTML = "";
+    products.forEach((p, i) => {
+      const mainRow = document.createElement("tr");
+      mainRow.classList.add("main-row");
+      mainRow.innerHTML = `
+        <td class="row-number">${i+1}</td>
+        <td style="text-align:right; vertical-align: middle;">${p.name} — (${p.category})</td>
+        <td style="text-align:right; vertical-align: middle;">
+          <button class="site-status ${p.kala ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'kala')" title="کالاگردون">${p.kala ? '✅ کالاگردون: موجود' : '❌ کالاگردون: ناموجود'}</button>
+          <button class="site-status ${p.bosh ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'bosh')" title="بوش">${p.bosh ? '✅ بوش: موجود' : '❌ بوش: ناموجود'}</button>
+          <button class="site-status ${p.karcher ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'karcher')" title="کارچر">${p.karcher ? '✅ کارچر: موجود' : '❌ کارچر: ناموجود'}</button>
+          <button class="site-status ${p.siyabazar ? 'available' : 'unavailable'}" onclick="toggleSite(${i}, 'siyabazar')" title="سیا بازار">${p.siyabazar ? '✅ سیا بازار: موجود' : '❌ سیا بازار: ناموجود'}</button>
+        </td>
+        <td class="fix-status" style="text-align:center; vertical-align: middle;">
+          ${p.fixStatus === "fixed" ? "اصلاح شد ✅" : p.fixStatus === "needFix" ? "نیاز به اصلاح ❌" : "-"}
+          <span class="fix-date">${p.fixDate ? p.fixDate : ""}</span>
+          <br/>
+          <button class="fix" onclick="markNeedFix(${i})">نیاز به اصلاح</button>
+          <button class="done" onclick="markFixed(${i})">اصلاح شد</button>
+        </td>
+        <td style="text-align:center; vertical-align: middle;">
+          <button class="edit" onclick="editProduct(${i})">ویرایش ✏️</button>
+        </td>
+        <td style="text-align:center; vertical-align: middle;">
+          <button class="delete" onclick="deleteProduct(${i})">حذف ❌</button>
+        </td>
+      `;
+      tbody.appendChild(mainRow);
+    });
+  }
+
+  function toggleSite(index, site) {
+    products[index][site] = !products[index][site];
+    renderProducts();
+    saveData();
+  }
+
+  function markNeedFix(index) {
+    products[index].fixStatus = "needFix";
+    products[index].fixDate = new Date().toLocaleString("fa-IR");
+    renderProducts();
+    saveData();
+  }
+
+  function markFixed(index) {
+    products[index].fixStatus = "fixed";
+    products[index].fixDate = new Date().toLocaleString("fa-IR");
+    renderProducts();
+    saveData();
+  }
+
+  function editProduct(index) {
+    const newName = prompt("نام جدید محصول:", products[index].name);
+    if(newName && newName.trim() !== ""){
+      products[index].name = newName.trim();
+      renderProducts();
+      saveData();
+    }
+  }
+
+  function deleteProduct(index) {
+    if(confirm("آیا از حذف این محصول مطمئن هستید؟")){
+      products.splice(index, 1);
+      renderProducts();
+      saveData();
+    }
+  }
+
+  function showNeedFix() {
+    showFilteredList("needFix", "محصولات نیاز به اصلاح");
+  }
+  function showFixed() {
+    showFilteredList("fixed", "محصولات اصلاح شده");
+  }
+  function hideFiltered() {
+    document.getElementById("filteredList").style.display = "none";
+  }
+
+  function showFilteredList(status, title) {
+    const container = document.getElementById("filteredList");
+    const ul = document.getElementById("filteredItems");
+    const heading = document.getElementById("filteredTitle");
+
+    heading.textContent = title;
+    ul.innerHTML = "";
+
+    const filteredProducts = products.filter(p => p.fixStatus === status);
+
+    if(filteredProducts.length === 0){
+      ul.innerHTML = "<li>هیچ محصولی موجود نیست.</li>";
+    } else {
+      filteredProducts.forEach((p) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${p.name} — ${p.category} <br><small>آخرین تغییر: ${p.fixDate}</small>`;
+        const btn = document.createElement("button");
+        btn.textContent = "❌";
+        btn.title = "حذف محصول";
+        btn.onclick = () => {
+          if(confirm("آیا مطمئن هستید که می‌خواهید این محصول را حذف کنید؟")){
+            const idx = products.findIndex(prod => prod.name === p.name);
+            if(idx > -1){
+              products.splice(idx, 1);
+              renderProducts();
+              showFilteredList(status, title);
+              saveData();
+            }
+          }
+        };
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+    }
+    container.style.display = "block";
+    container.scrollIntoView({behavior:"smooth"});
+  }
+
+  function filterProducts() {
+    const value = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.querySelectorAll("#productBody tr.main-row");
+    rows.forEach(row => {
+      const name = row.cells[1].textContent.toLowerCase();
+      const display = name.includes(value) ? "" : "none";
+      row.style.display = display;
+    });
+  }
+
+  window.onload = () => {
+    loadData();
+  };
+</script>
 </body>
 </html>
